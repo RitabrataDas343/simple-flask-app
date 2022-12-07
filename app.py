@@ -31,3 +31,6 @@ def home():
     schedule.every(5).seconds.do(send_request)
     schedule.run_pending()
     return render_template('base.html', l = l, length = len(l))
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0',port=8000)
