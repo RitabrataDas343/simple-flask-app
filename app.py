@@ -1,4 +1,7 @@
 from flask import Flask, render_template
+from threading import Thread
+import requests
+import schedule
 
 app = Flask(  
 	__name__,
@@ -6,22 +9,25 @@ app = Flask(
 	static_folder='static'  
 )
 
-@app.route('/')  
-def base_page():
-	random_num = 34
-	return render_template(
-		'base.html',  
-		random_number=random_num  
-	)
+l = list()
 
+def run():
+	app.run(host='0.0.0.0',port=8000)
 
-@app.route('/2')
-def page_2():
-	return render_template('site_2.html', random_str="20CS8002")
+def keep_alive(): 
+    t = Thread(target=run)
+    t.start()
 
+def send_request():
+    URL = "https://github-readme-activity-graph.ritabratadas1.repl.co"
+    r = requests.get(url = URL)
+    if (len(l) == 10):
+        l.clear()
+    l.append(str(r))
 
-if __name__ == "__main__":  
-	app.run( 
-		host='0.0.0.0',  
-		port=8000
-	)
+@app.route('/')
+def home():
+    keep_alive()
+    schedule.every(5).seconds.do(send_request)
+    schedule.run_pending()
+    return render_template('base.html', l = l)
