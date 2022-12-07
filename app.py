@@ -21,13 +21,13 @@ def keep_alive():
 def send_request():
     URL = "https://github-readme-activity-graph.ritabratadas1.repl.co"
     r = requests.get(url = URL)
-    if (len(l) == 10):
+    if (len(l) == 5):
         l.clear()
-    l.append(str(r))
+    l.append(r.status_code)
 
 @app.route('/')
 def home():
     keep_alive()
     schedule.every(5).seconds.do(send_request)
     schedule.run_pending()
-    return render_template('base.html', l = l)
+    return render_template('base.html', l = l, length = len(l))

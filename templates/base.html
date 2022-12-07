@@ -13,4 +13,12 @@
 		<cb>{{i}}</cb><br>
 		{% endfor %}
 	</p>
+	<br><br>
+	<p>
+		{% if length != 0 and l[length - 1] == 200 %}
+		<h1 style="color: lime;">URL is active!!</h1>
+		{% else %}
+		<h1 style="color: red;">URL is inactive!!</h1>
+		{% endif %}
+	</p>
 </body>
