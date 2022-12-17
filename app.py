@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from threading import Thread
-import requests
 import schedule
+import os
 
 app = Flask(  
 	__name__,
@@ -19,11 +19,14 @@ def keep_alive():
     t.start()
 
 def send_request():
-    URL = "https://github-readme-activity-graph.ritabratadas1.repl.co"
-    r = requests.get(url = URL)
+    hostname = "github-readme-activity-graph.ritabratadas1.repl.co" 
+    response = os.system("ping -c 1 " + hostname)
     if (len(l) == 5):
         l.clear()
-    l.append(r.status_code)
+    if response == 0:
+        l.append(200)
+    else:
+        l.append(500)
 
 @app.route('/')
 def home():
